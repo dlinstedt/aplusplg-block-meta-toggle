@@ -150,7 +150,7 @@ final class Plugin {
             'aplusplugins-block-meta-toggle-js',
             'apluspluginsBlockMetaToggleL10n',
             [
-                'toggleMeta' => __( 'Toggle Meta', 'aplusplugins-block-meta-toggle' ),
+                'toggleMeta' => __( 'Toggle Meta', 'aplusplg-block-meta-toggle' ),
             ]
         );
     }
