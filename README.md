@@ -11,10 +11,10 @@ Unlike other solutions that physically detach or move DOM elements into React mo
 
 ## Screenshots
 
-![Editor Toolbar Toggle](assets/screenshot-1.png)
+![Editor Toolbar Toggle](assets/screenshots/screenshot-1.png)
 *Figure 1: Double Vertical Arrows toggle injected into the top toolbar.*
 
-![Expanded Meta Panel](assets/screenshot-2.png)
+![Expanded Meta Panel](assets/screenshots/screenshot-2.png)
 *Figure 2: Expanded full-height meta box viewport.*
 
 ---
