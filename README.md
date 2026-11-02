@@ -5,7 +5,7 @@
 
 A lightweight, highly durable WordPress utility that adds an **Inline Height Toggle** to the Block Editor toolbar. It minimizes the footer meta box container (ACF, Rank Math, Yoast, and custom metaboxes) down to a clean 32px bar and lets you expand it into a full-height editing viewport with a single click. It works for ANY meta boxes found at the bottom of your content editor.
 
-Unlike other solutions that physically detach or move DOM elements into React modal portals - breaking event listeners and virtual DOM states - **APlusPlugins Block Meta Toggle** operates purely through native CSS and JavaScript height manipulation directly within the WordPress canvas flow.
+Unlike other solutions that physically detach or move DOM elements into React modal portals - breaking event listeners and virtual DOM states - **Block Meta Toggle** operates purely through native CSS and JavaScript height manipulation directly within the WordPress canvas flow.
 
 ---
 
@@ -34,7 +34,7 @@ Unlike other solutions that physically detach or move DOM elements into React mo
 ### As a Standard Plugin
 1. Download or clone this repository.
 2. Upload the `aplusplg-block-meta-toggle` directory to your site's `/wp-content/plugins/` folder.
-3. Activate **APlusPlugins Block Meta Toggle** via **Plugins > Installed Plugins** in the WordPress admin dashboard.
+3. Activate **Block Meta Toggle** via **Plugins > Installed Plugins** in the WordPress admin dashboard.
 
 ### As an MU-Plugin (Recommended for Agencies)
 Drop `aplusplg-block-meta-toggle.php` directly into `/wp-content/mu-plugins/`. It will activate automatically across all post types in the Block Editor without cluttering the main plugins list.
