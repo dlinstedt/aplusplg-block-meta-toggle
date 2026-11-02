@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Block Meta Toggle
+ * Plugin Name:       APlusPlugins Block Meta Toggle
  * Plugin URI:        https://github.com/dlinstedt/aplusplugins-block-meta-toggle
  * Description:       A lightweight, durable inline height toggle for Block Editor meta boxes. Keeps custom fields accessible without cluttering the canvas.
  * Version:           1.0.0
