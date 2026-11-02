@@ -1,4 +1,4 @@
-# APlusPlugins Block Meta Toggle (`aplusplugins-block-meta-toggle`)
+# Block Meta Toggle (`aplusplg-block-meta-toggle`)
 
 [![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![WordPress Compatibility](https://img.shields.io/badge/WordPress-6.0%2B-blue)](https://wordpress.org)
@@ -33,17 +33,17 @@ Unlike other solutions that physically detach or move DOM elements into React mo
 
 ### As a Standard Plugin
 1. Download or clone this repository.
-2. Upload the `aplusplugins-block-meta-toggle` directory to your site's `/wp-content/plugins/` folder.
+2. Upload the `aplusplg-block-meta-toggle` directory to your site's `/wp-content/plugins/` folder.
 3. Activate **APlusPlugins Block Meta Toggle** via **Plugins > Installed Plugins** in the WordPress admin dashboard.
 
 ### As an MU-Plugin (Recommended for Agencies)
-Drop `aplusplugins-block-meta-toggle.php` directly into `/wp-content/mu-plugins/`. It will activate automatically across all post types in the Block Editor without cluttering the main plugins list.
+Drop `aplusplg-block-meta-toggle.php` directly into `/wp-content/mu-plugins/`. It will activate automatically across all post types in the Block Editor without cluttering the main plugins list.
 
 ---
 
 ## How It Works
 
-1. On Block Editor load, the plugin injects a **Double Vertical Arrows** icon (`#aplusplugins-block-meta-toggle-btn`) into the top header settings bar.
+1. On Block Editor load, the plugin injects a **Double Vertical Arrows** icon (`#aplusplg-block-meta-toggle-btn`) into the top header settings bar.
 2. By default, the native `.edit-post-meta-boxes-main` container is locked to a clean 32px minimized bar at the bottom of the screen.
 3. Clicking **Toggle Meta** expands the container to fill the visible editor height (`calc(100vh - 120px)`) and smoothly scrolls it into view.
 4. Clicking **Toggle Meta** again minimizes the panel back to 32px and returns scroll focus smoothly to the main content canvas.
