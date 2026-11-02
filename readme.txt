@@ -1,4 +1,4 @@
-=== APlusPlugins Block Meta Toggle ===
+=== Block Meta Toggle ===
 Contributors: dlinstedt
 Donate link: https://aplusplugins.com
 Tags: acf, meta box, block editor, custom fields, metabox
