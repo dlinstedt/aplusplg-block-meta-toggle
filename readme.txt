@@ -55,4 +55,4 @@ Yes. Any meta boxes that show up in the meta box area below the content still wo
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of APlusPlugins Block Meta Toggle.
+Initial release of Block Meta Toggle.
