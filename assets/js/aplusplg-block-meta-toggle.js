@@ -1,77 +1,64 @@
 /**
- * Block Meta Toggle - Production JavaScript Engine
+ * Block Meta Toggle - native WordPress meta-box panel controller.
+ *
+ * Delegates expand/collapse to the editor's own button. The editor owns the
+ * resizable splitter, height persistence, visibility, and meta-box DOM.
  */
-(function() {
+(function () {
     'use strict';
 
-    function setupMetaHeightToggle() {
-        var topToolbar = document.querySelector('.edit-post-header__settings') || 
-                         document.querySelector('.interface-pinned-items');
+    var BUTTON_ID = 'aplusplg-block-meta-toggle-btn';
+    var TOGGLE_SELECTOR = '.edit-post-meta-boxes-main__presenter button[aria-expanded]';
+    var attempts = 0;
+    var maxAttempts = 40;
 
-        // Prevent duplicate insertion using the updated ID
-        if (!topToolbar || document.getElementById('aplusplg-block-meta-toggle-btn')) {
-            return;
+    function nativeToggle() {
+        return document.querySelector(TOGGLE_SELECTOR);
+    }
+
+    function mountToggle() {
+        var topToolbar = document.querySelector('.edit-post-header__settings') ||
+            document.querySelector('.interface-pinned-items');
+        var coreToggle = nativeToggle();
+
+        if (!topToolbar || !coreToggle || !window.wp || !window.wp.element ||
+            !window.wp.components || !window.wp.components.Tooltip) {
+            return false;
         }
 
-        // Mount container for React component
+        if (document.getElementById(BUTTON_ID)) {
+            return true;
+        }
+
         var mountPoint = document.createElement('div');
         mountPoint.className = 'aplusplg-block-meta-toggle-wrapper';
         topToolbar.insertBefore(mountPoint, topToolbar.firstChild);
 
         var el = window.wp.element.createElement;
         var Tooltip = window.wp.components.Tooltip;
+        var buttonLabel = (window.aplusplgBlockMetaToggleL10n &&
+            window.aplusplgBlockMetaToggleL10n.toggleMeta) ||
+            'Toggle Meta Boxes';
 
-        // Retrieve localized text from the prefixed window object or fallback gracefully
-        var buttonLabel = (window.aplusplgBlockMetaToggleL10n && window.aplusplgBlockMetaToggleL10n.toggleMeta) 
-            ? window.aplusplgBlockMetaToggleL10n.toggleMeta 
-            : 'Toggle Meta';
+        function clickNativeToggle(event) {
+            event.preventDefault();
+            var button = nativeToggle();
 
-        // Render Native WordPress Tooltip & Button
+            // Do nothing when there is no native resizable meta-box panel.
+            // Never replace WordPress's drag handling with our own.
+            if (button && !button.disabled) {
+                button.click();
+            }
+        }
+
         window.wp.element.render(
-            el(
-                Tooltip,
-                { text: buttonLabel },
-                el(
-                    'button',
-                    {
-                        type: 'button',
-                        id: 'aplusplg-block-meta-toggle-btn',
-                        'aria-label': buttonLabel,
-                        onClick: function(e) {
-                            e.preventDefault();
-                            var poststuff = document.getElementById('poststuff');
-                            var mainWrapper = document.querySelector('.edit-post-meta-boxes-main');
-                            var targetWrapper = mainWrapper || (poststuff ? poststuff.closest('.edit-post-meta-boxes-main') || poststuff : null);
-
-                            if (!targetWrapper) {
-                                return;
-                            }
-
-                            // Toggle prefixed CSS state classes
-                            var isExpanded = targetWrapper.classList.toggle('aplusplg-block-meta-expanded-view');
-                            document.body.classList.toggle('aplusplg-block-meta-panel-expanded', isExpanded);
-
-                            if (isExpanded) {
-                                // Auto-uncollapse hidden inner containers when expanding
-                                var collapsedLiners = targetWrapper.querySelectorAll('.edit-post-layout__metaboxes[hidden], [aria-expanded="false"]');
-                                collapsedLiners.forEach(function(item) {
-                                    item.removeAttribute('hidden');
-                                    if (item.getAttribute('aria-expanded') === 'false') {
-                                        item.setAttribute('aria-expanded', 'true');
-                                    }
-                                });
-
-                                targetWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            } else {
-                                // Minimize behavior: Scroll back up to main editor canvas
-                                var editorCanvas = document.querySelector('.edit-post-visual-editor') || document.querySelector('.block-editor-writing-flow');
-                                if (editorCanvas) {
-                                    editorCanvas.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                }
-                            }
-                        }
-                    },
-                    // Double Vertical Arrows SVG (Separated & Bold)
+            el(Tooltip, { text: buttonLabel },
+                el('button', {
+                    type: 'button',
+                    id: BUTTON_ID,
+                    'aria-label': buttonLabel,
+                    onClick: clickNativeToggle
+                },
                     el('svg', {
                         width: 20,
                         height: 20,
@@ -80,32 +67,26 @@
                         stroke: 'currentColor',
                         strokeWidth: 2.5,
                         strokeLinecap: 'round',
-                        strokeLinejoin: 'round'
+                        strokeLinejoin: 'round',
+                        'aria-hidden': 'true'
                     },
-                        // Top arrow pointing UP
                         el('polyline', { points: '6 9 12 4 18 9' }),
-                        // Bottom arrow pointing DOWN
                         el('polyline', { points: '6 15 12 20 18 15' })
                     )
                 )
             ),
             mountPoint
         );
+
+        return true;
     }
 
-    // Polling initializer with timeout guard
-    var attempts = 0;
-    var maxAttempts = 20;
-    var checkInterval = setInterval(function() {
-        attempts++;
-        var topToolbar = document.querySelector('.edit-post-header__settings') || 
-                         document.querySelector('.interface-pinned-items');
-
-        if (topToolbar) {
-            setupMetaHeightToggle();
-            clearInterval(checkInterval);
-        } else if (attempts >= maxAttempts) {
-            clearInterval(checkInterval);
+    // Gutenberg mounts its editor and meta-box region asynchronously.
+    // Register the toolbar control only after the native toggle exists.
+    var checkInterval = window.setInterval(function () {
+        attempts += 1;
+        if (mountToggle() || attempts >= maxAttempts) {
+            window.clearInterval(checkInterval);
         }
     }, 500);
 })();
