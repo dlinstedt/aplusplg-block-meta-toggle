@@ -3,9 +3,9 @@
 [![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![WordPress Compatibility](https://img.shields.io/badge/WordPress-6.0%2B-blue)](https://wordpress.org)
 
-A lightweight, highly durable WordPress utility that adds an **Inline Height Toggle** to the Block Editor toolbar. It minimizes the footer meta box container (ACF, Rank Math, Yoast, and custom metaboxes) down to a clean 32px bar and lets you expand it into a full-height editing viewport with a single click. It works for ANY meta boxes found at the bottom of your content editor.
+A lightweight WordPress utility that adds a **Toggle Meta Boxes** button to the Block Editor toolbar. The button uses WordPress's existing meta-box collapse/expand control rather than imposing its own height rules. The native resize handle remains draggable, and WordPress retains the open panel height selected by the user.
 
-Unlike other solutions that physically detach or move DOM elements into React modal portals - breaking event listeners and virtual DOM states - **Block Meta Toggle** operates purely through native CSS and JavaScript height manipulation directly within the WordPress canvas flow.
+The plugin does not relocate meta boxes, manipulate their visibility attributes, or intercept editor save behavior.
 
 ---
 
@@ -23,8 +23,8 @@ Unlike other solutions that physically detach or move DOM elements into React mo
 
 * **Zero DOM Relocation:** Keeps `#poststuff` and all meta fields in their native DOM location. Fully preserves ACF repeater fields, Select2 dropdowns, color pickers, and third-party JS listeners.
 * **100% Core Save Compatible:** No hijacked submission handlers or broken auto-save states. Standard WordPress Update/Publish buttons handle all data seamlessly.
-* **Inline Canvas Viewport:** Expands native meta boxes smoothly over the content editor while maintaining full visibility of top toolbars, left admin menus, and right sidebars.
-* **Auto-Expand Collapsed Panels:** Automatically uncollapses hidden or aria-collapsed field liners when maximized.
+* **Native Resize Support:** The WordPress drag handle and resize state remain fully under WordPress control.
+* **Two-State Toolbar Toggle:** Collapses the meta-box panel or reopens it at the height managed by WordPress.
 * **Lightweight & Clean:** Class-based Singleton architecture with zero database settings or admin clutter.
 
 ---
@@ -36,17 +36,18 @@ Unlike other solutions that physically detach or move DOM elements into React mo
 2. Upload the `aplusplg-block-meta-toggle` directory to your site's `/wp-content/plugins/` folder.
 3. Activate **Block Meta Toggle** via **Plugins > Installed Plugins** in the WordPress admin dashboard.
 
-### As an MU-Plugin (Recommended for Agencies)
-Drop `aplusplg-block-meta-toggle.php` directly into `/wp-content/mu-plugins/`. It will activate automatically across all post types in the Block Editor without cluttering the main plugins list.
+### As an MU-Plugin
+Place the whole plugin directory in `/wp-content/mu-plugins/` and load the main PHP file from a small root-level MU loader. Do not copy just the PHP file: it requires its bundled JavaScript and CSS.
 
 ---
 
 ## How It Works
 
-1. On Block Editor load, the plugin injects a **Double Vertical Arrows** icon (`#aplusplg-block-meta-toggle-btn`) into the top header settings bar.
-2. By default, the native `.edit-post-meta-boxes-main` container is locked to a clean 32px minimized bar at the bottom of the screen.
-3. Clicking **Toggle Meta** expands the container to fill the visible editor height (`calc(100vh - 120px)`) and smoothly scrolls it into view.
-4. Clicking **Toggle Meta** again minimizes the panel back to 32px and returns scroll focus smoothly to the main content canvas.
+1. The plugin waits for the Block Editor's native meta-box expand/collapse control to be mounted.
+2. It adds a **Toggle Meta Boxes** button to the editor toolbar.
+3. Clicking the button activates WordPress's native panel control. The panel closes to its native minimum or reopens using WordPress's preferred height.
+4. The native drag bar remains operable at all times. Dragging adjusts panel height without the plugin overriding that value.
+5. Where WordPress provides no native resizable meta-box panel, no toggle is inserted.
 
 ---
 
